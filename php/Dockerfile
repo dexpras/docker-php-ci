@@ -6,4 +6,4 @@ RUN apt-get update && apt-get upgrade -y
 WORKDIR /var/www/html
 
 # Copy existing application directory contents
-COPY ./php/src/ /var/www/html/
+COPY ./src /var/www/html
