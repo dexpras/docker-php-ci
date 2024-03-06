@@ -3,26 +3,26 @@ services:
   php-apache-environment:
     container_name: php-apache-ci
     image: docker-php-ci-php-apache-environment
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
     # volumes:
     #   - ./php/src/upload:/var/www/html/upload
     ports:
       - 7700:80
     deploy:
       mode: global
-  db:
-    container_name: mysqldb-ci
-    # image: mysql:5.7
-    image: mariadb:10.5
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: /run/secrets/MYSQL_ROOT_PASSWORD
-      MYSQL_DATABASE: /run/secrets/MY_DATABASE
-      MYSQL_USER: MYSQL_USER
-      MYSQL_PASSWORD: MYSQL_PASSWORD
-    ports:
-      - 3310:3306
+  # db:
+  #   container_name: mysqldb-ci
+  #   # image: mysql:5.7
+  #   image: mariadb:10.5
+  #   restart: always
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: /run/secrets/MYSQL_ROOT_PASSWORD
+  #     MYSQL_DATABASE: /run/secrets/MY_DATABASE
+  #     MYSQL_USER: MYSQL_USER
+  #     MYSQL_PASSWORD: MYSQL_PASSWORD
+  #   ports:
+  #     - 3310:3306
   phpmyadmin:
     container_name: phpmyadmin-ci
     image: phpmyadmin/phpmyadmin
@@ -31,8 +31,8 @@ services:
     restart: always
     environment:
         PMA_HOST: db
-    depends_on:
-        - db
+    # depends_on:
+    #     - db
     deploy:
       mode: global
 secrets:
