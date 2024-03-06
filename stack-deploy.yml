@@ -9,6 +9,8 @@ services:
     #   - ./php/src/upload:/var/www/html/upload
     ports:
       - 7700:80
+    deploy:
+      mode: global
   db:
     container_name: mysqldb-ci
     # image: mysql:5.7
