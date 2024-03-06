@@ -15,8 +15,8 @@ services:
     image: mariadb:10.5
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: MYSQL_ROOT_PASSWORD
-      MYSQL_DATABASE: MY_DATABASE
+      MYSQL_ROOT_PASSWORD: /run/secrets/MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: /run/secrets/MY_DATABASE
       MYSQL_USER: MYSQL_USER
       MYSQL_PASSWORD: MYSQL_PASSWORD
     ports:
@@ -31,3 +31,11 @@ services:
         PMA_HOST: db
     depends_on:
         - db
+secrets:
+  MYSQL_HOST:
+    file: .secrets/MYSQL_HOST.txt
+  MYSQL_ROOT_PASSWORD:
+    file: .secrets/MYSQL_ROOT_PASSWORD.txt
+  MYSQL_DATABASE:
+    file: .secrets/MYSQL_DATABASE.txt
+
