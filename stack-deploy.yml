@@ -33,6 +33,8 @@ services:
         PMA_HOST: db
     depends_on:
         - db
+    deploy:
+      mode: global
 secrets:
   MYSQL_HOST:
     file: .secrets/MYSQL_HOST.txt
