@@ -1,0 +1,52 @@
+version: '3.1'
+services:
+ php-apache-environment:
+    image: docker-php-ci-php-apache-environment
+    ports:
+      - target: 80
+    deploy:
+      mode: global
+ phpmyadmin:
+    container_name: phpmyadmin-ci
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - target: 80
+    restart: always
+    environment:
+      PMA_HOST: db
+    deploy:
+      mode: global
+ ingress:
+    image: traefik:v2.5
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    deploy:
+      mode: global
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.php-apache-environment.rule=Host(`php-app.example.com`)"
+      - "traefik.http.routers.php-apache-environment.entrypoints=web"
+      - "traefik.http.services.php-apache-environment.loadbalancer.server.port=80"
+      - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.example.com`)"
+      - "traefik.http.routers.phpmyadmin.entrypoints=web"
+      - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
+networks:
+ web:
+    external: true
+secrets:
+ MYSQL_HOST:
+    file: .secrets/MYSQL_HOST.txt
+ MYSQL_ROOT_PASSWORD:
+    file: .secrets/MYSQL_ROOT_PASSWORD.txt
+ MYSQL_DATABASE:
+    file: .secrets/MYSQL_DATABASE.txt
